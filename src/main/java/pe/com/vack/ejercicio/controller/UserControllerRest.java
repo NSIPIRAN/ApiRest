@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,11 +20,16 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import pe.com.vack.ejercicio.model.UserDTO;
+import pe.com.vack.ejercicio.services.UserService;
+
 
 @RestController
 @RequestMapping("/users")
 @Api(tags = "User API Rest")
 public class UserControllerRest {
+	
+	@Autowired
+	private UserService userService;
 		
 	@GetMapping("/{id}")
 	@ApiOperation(notes= "Retrieve one user system by id",value="Get user by id")
@@ -31,10 +37,8 @@ public class UserControllerRest {
 		
 		System.out.println("Recovery by id");
 		
-		UserDTO userDTO = new UserDTO(1,"Rafael");
-		userDTO.setLastname("Morillo");
-		userDTO.setEdad(30);
-	
+		UserDTO userDTO = userService.getUserById(id);
+
 		return ResponseEntity.ok(userDTO);
 		//esto nos devuelve un json resultante, lo hace spring y con responseentity envuelve para codigos html
 	}
